@@ -9,7 +9,7 @@ variable "tags" {
 }
 
 resource "aws_iam_role" "iam_role" {
-  name = join("", [var.name, "-", "iam-role"])
+  name = "${var.name}-iam-role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -27,26 +27,30 @@ resource "aws_iam_role" "iam_role" {
     ]
   })
 
-  inline_policy {
-    name = join("", [var.name, "-", "iam-policy"])
-
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action = [
-            "logs:CreateLogStream",
-            "logs:DescribeLogStreams",
-            "logs:CreateLogGroup",
-            "logs:PutLogEvents"
-
-          ]
-          Effect   = "Allow"
-          Resource = "*"
-        },
-      ]
-    })
-  }
-
   tags = var.tags
 }
+resource "aws_iam_role_policy" "test_policy"{
+  name ="${var.name}-iam-policy"
+  role = aws_iam_role.iam_role.id
+
+# Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+
+  policy = jsonencode({
+    Version = "2021-10-17"
+    Statement =[
+     {
+      Action = [
+      "logs:CreateLogStream",
+      "logs:DescribeLogStreams",
+      "logs:CreateLogGroup",
+      "logs:PutlogEvents"
+     ]
+     Effect = "Allow"
+     Resource ="*"
+    },
+  ]
+})
+}
+
+

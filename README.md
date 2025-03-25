@@ -1,5 +1,5 @@
 # Fully-Automated-CICD-Pipeline
-# devops-fully-automated-infra
+# devops-fully-automated-infrastructure
 Fully automated and secured Terraform infra pipeline
 
 Testing teh webhook.....
